@@ -44,11 +44,38 @@ using Microsoft.AspNetCore.Mvc;
     }
 
     [HttpPost]
-    public ActionResult<House> postHouse(){
+    public ActionResult<House> postHouse([FromBody] House houseData){
         try 
         {
-            House house = _housesService.postHouse();
+            House house = _housesService.postHouse(houseData);
             return house;
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+    }
+
+    [HttpPut("{id}")]
+    public ActionResult<House> editHouse([FromBody] House updata, int id){
+        try 
+        {
+            updata.id = id;
+            House house = _housesService.editHouse(updata);
+            return house;
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+    }
+
+    [HttpDelete("{id}")]
+    public ActionResult<String> deleteHouse(int id){
+        try 
+        {
+            string message = _housesService.deleteHouse(id);
+            return message;
         }
         catch (Exception e)
         {

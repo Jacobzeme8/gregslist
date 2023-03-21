@@ -16,6 +16,32 @@ using System.Threading.Tasks;
         _db = db;
     }
 
+    internal int deleteHouse(int id)
+    {
+        string sql = @"
+        DELETE FROM houses WHERE id = @id;
+        ";
+
+        int rows = _db.Execute(sql, new {id});
+        return rows;
+    }
+
+    internal int editHouse(House house)
+    {
+        string sql = @"
+        UPDATE houses
+        set
+        bedrooms = @bedrooms,
+        bathrooms = @bathrooms,
+        address = @address,
+        floors = @floors
+        WHERE id = @id
+        ";
+        int rows = _db.Execute(sql, house);
+        return rows;
+
+    }
+
     internal List<House> getAllHouses()
     {
         string sql = @"
@@ -41,6 +67,20 @@ using System.Threading.Tasks;
 
         House house = _db.Query<House>(sql, new {id}).FirstOrDefault();
         return house;
+    }
+
+    internal House postHouse(House houseData)
+    {
+        string sql = @"
+        INSERT INTO houses
+        (bedrooms, bathrooms, floors, address)
+        VALUES
+        (@bedrooms, @bathrooms, @floors, @address);
+        SELECT LAST_INSERT_ID();
+        ";
+        int id = _db.ExecuteScalar<int>(sql, houseData);
+        houseData.id = id;
+        return houseData;
     }
     }
 }

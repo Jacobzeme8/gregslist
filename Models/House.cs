@@ -9,9 +9,9 @@ using System.Threading.Tasks;
     {
         
         public int id { get; set; }
-        public int bedrooms { get; set; }
-        public double bathrooms { get; set; }
-        public int floors { get; set; }
+        public int? bedrooms { get; set; }
+        public double? bathrooms { get; set; }
+        public int? floors { get; set; }
         public string address { get; set; }
 
     }
